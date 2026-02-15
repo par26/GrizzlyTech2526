@@ -55,7 +55,7 @@ public class TestSorter extends CommandOpMode {
         new Trigger(() -> MatchValues.robotState == MatchValues.RobotState.INTAKE)
                 .whenActive(new SequentialCommandGroup(
                         new IntakeStateCommand(m_intake, m_servo),
-                        new SorterIntakeCommand(m_sensor, m_servo)
+                        new SorterIntakeCommand(m_sensor, m_servo, telemetry)
                 ));
     }
 }

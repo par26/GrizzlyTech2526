@@ -39,7 +39,7 @@ public class Far6 extends CommandOpMode {
                                 new FollowPathCommand(r.f, p.corner1()),
                                 new SequentialCommandGroup(
                                         new IntakeStateCommand(r.intake, r.servo),
-                                        new SorterIntakeCommand(r.sensor, r.servo)
+                                        new SorterIntakeCommand(r.sensor, r.servo, telemetry)
                                 )
                         ),
                         new FollowPathCommand(r.f, p.shoot1()),
@@ -50,7 +50,7 @@ public class Far6 extends CommandOpMode {
                                 new FollowPathCommand(r.f, p.scoop()),
                                 new SequentialCommandGroup(
                                         new IntakeStateCommand(r.intake, r.servo),
-                                        new SorterIntakeCommand(r.sensor, r.servo)
+                                        new SorterIntakeCommand(r.sensor, r.servo, telemetry)
                                 )
                         ),
                         new FollowPathCommand(r.f, p.shoot2()),

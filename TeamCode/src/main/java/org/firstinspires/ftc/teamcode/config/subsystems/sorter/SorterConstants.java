@@ -39,8 +39,8 @@ public class SorterConstants {
 
     /** Sorter rotation / indexing behavior */
     public static final class Index {
-        public static int OFFSET_ANGLE_DEG = 15;   // node1/node2 offset
-        public static int NODE_ANGLE_DEG   = 80;  // spacing between nodes
+        public static double OFFSET_ANGLE_DEG = 7.5;   // node1/node2 offset
+        public static double NODE_ANGLE_DEG   = 60;  // spacing between nodes
     }
 
     /** Kicker servo positions + timing */

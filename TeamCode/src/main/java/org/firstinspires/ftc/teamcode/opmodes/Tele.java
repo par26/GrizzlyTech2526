@@ -69,7 +69,7 @@ public class Tele extends CommandOpMode {
         new Trigger(() -> MatchValues.robotState == MatchValues.RobotState.INTAKE)
                 .whenActive(new SequentialCommandGroup(
                         new IntakeStateCommand(r.intake, r.servo),
-                        new SorterIntakeCommand(r.sensor, r.servo)
+                        new SorterIntakeCommand(r.sensor, r.servo, telemetry)
                 ));
 
 
