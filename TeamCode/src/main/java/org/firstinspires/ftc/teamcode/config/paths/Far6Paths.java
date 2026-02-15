@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.config.paths;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -13,53 +14,73 @@ public class Far6Paths {
     private Follower f;
 
     public Pose startPose = new Pose(87.317, 9.3, Math.toRadians(0));
-    Pose matchAngle = new Pose(129.382, 35.35, Math.toRadians(0));
-    Pose intake = new Pose(135, 35.35, Math.toRadians(0));
+    Pose corner1 = new Pose(135, 9.3, 0);
+    Pose shoot = new Pose(86.38, 14.23, 0);
+    Pose corner2 = new Pose(132.79, 11.019); //tangential, no heading
+    Pose corner2Control = new Pose(119.63, 5.698);
+
 
     public Far6Paths(Robot r) {
         this.f = r.f;
 
         if (r.a.equals(Alliance.BLUE)) {
             startPose = startPose.mirror();
-            matchAngle = matchAngle.mirror();
-            intake = intake.mirror();
+            corner1 = corner1.mirror();
+            shoot = shoot.mirror();
+            corner2 = corner2.mirror();
+            corner2Control = corner2Control.mirror();
         }
     }
 
-    public PathChain matchAngle() {
+    public PathChain corner1() {
         return f.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 startPose,
-                                matchAngle
+                                corner1
                         )
                 )
-                .setLinearHeadingInterpolation(startPose.getHeading(), matchAngle.getHeading())
+                .setLinearHeadingInterpolation(startPose.getHeading(), corner1.getHeading())
                 .build();
     }
 
-    public PathChain intake() {
+    public PathChain shoot1() {
         return f.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                matchAngle,
-                                intake
+                                corner1,
+                                shoot
+                        )
+                )
+                .setLinearHeadingInterpolation(corner1.getHeading(), shoot.getHeading())
+                .build();
+    }
+
+    public PathChain scoop() {
+        return f.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                shoot,
+                                corner2,
+                                corner2Control
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .build();
     }
 
-    public PathChain shoot() {
+    public PathChain shoot2() {
         return f.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                intake,
-                                startPose
+                                corner2,
+                                shoot
                         )
                 )
-                .setLinearHeadingInterpolation(intake.getHeading(), startPose.getHeading())
+                .setConstantHeadingInterpolation(0)
                 .build();
     }
+
+
 
 }

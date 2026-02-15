@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
+import org.firstinspires.ftc.teamcode.config.commands.IntakeStateCommand;
+import org.firstinspires.ftc.teamcode.config.commands.ShootStateCommand;
+import org.firstinspires.ftc.teamcode.config.commands.sorter.SorterIntakeCommand;
+import org.firstinspires.ftc.teamcode.config.commands.sorter.SorterShootCommand;
 import org.firstinspires.ftc.teamcode.config.paths.Far6Paths;
 import org.firstinspires.ftc.teamcode.config.util.Alliance;
 import org.firstinspires.ftc.teamcode.config.util.Robot;
@@ -27,9 +32,32 @@ public class Far6 extends CommandOpMode {
 
         schedule(
                 new SequentialCommandGroup(
-                        new FollowPathCommand(r.f, p.matchAngle()),
-                        new FollowPathCommand(r.f, p.intake()),
-                        new FollowPathCommand(r.f, p.shoot())
+                        new ShootStateCommand(r.intake, r.servo),
+                        new SorterShootCommand(r.sensor, r.servo, r.kicker),
+
+                        new ParallelCommandGroup(
+                                new FollowPathCommand(r.f, p.corner1()),
+                                new SequentialCommandGroup(
+                                        new IntakeStateCommand(r.intake, r.servo),
+                                        new SorterIntakeCommand(r.sensor, r.servo)
+                                )
+                        ),
+                        new FollowPathCommand(r.f, p.shoot1()),
+                        new ShootStateCommand(r.intake, r.servo),
+                        new SorterShootCommand(r.sensor, r.servo, r.kicker),
+
+                        new ParallelCommandGroup(
+                                new FollowPathCommand(r.f, p.scoop()),
+                                new SequentialCommandGroup(
+                                        new IntakeStateCommand(r.intake, r.servo),
+                                        new SorterIntakeCommand(r.sensor, r.servo)
+                                )
+                        ),
+                        new FollowPathCommand(r.f, p.shoot2()),
+                        new ShootStateCommand(r.intake, r.servo),
+                        new SorterShootCommand(r.sensor, r.servo, r.kicker)
+
+                        //repeat follow path command scoop & shoot2 as many times as possible
                 )
         );
 

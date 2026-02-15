@@ -19,6 +19,7 @@ public class ShootStateCommand extends SequentialCommandGroup {
 
         addCommands(
                 new InstantCommand(m_servo::applyOffset, m_servo),
+                new WaitCommand(300),
                 new InstantCommand(m_intake::reverse, m_intake),
                 new WaitCommand(300),
                 new InstantCommand(m_intake::raiseIntake, m_intake)
