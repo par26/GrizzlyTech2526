@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.config.pedropathing.Constants;
 import org.firstinspires.ftc.teamcode.config.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.config.subsystems.Localization;
 import org.firstinspires.ftc.teamcode.config.subsystems.intake.Intake;
-//import org.firstinspires.ftc.teamcode.config.subsystems.shooter.Shooter;
+import org.firstinspires.ftc.teamcode.config.subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.config.subsystems.sorter.Kicker;
 import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterSensor;
 import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterServo;
@@ -23,7 +23,7 @@ public class Robot {
 
     public final Intake intake;
     public final Turret turret;
-//    public final Shooter shooter;
+    public final Shooter shooter;
     public final SorterSensor sensor;
     public final SorterServo servo;
     public final Kicker kicker;
@@ -40,7 +40,7 @@ public class Robot {
         f = Constants.createFollower(hwMap);
         intake = new Intake(hwMap);
         turret = new Turret(hwMap, f, telemetry);
-//        shooter = new Shooter(hwMap, follower);
+        shooter = new Shooter(hwMap, f);
         servo = new SorterServo(hwMap, telemetry);
         sensor = new SorterSensor(hwMap);
         kicker = new Kicker(hwMap);
