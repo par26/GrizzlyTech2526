@@ -22,8 +22,8 @@ public class Shooter extends SubsystemBase {
     private final double farThreshold = 120;
     private static double farVelocity = 1550;
 
-    private static final double[] xClose = {44, 72, 100};
-    private static final double[] yClose = {10, 38, 66};
+    private static final double[] xClose = {44, 72, 110};
+    private static final double[] yClose = {15, 35, 70};
     private static final double[][] closeVelocities = {
             {1200, 1200, 1275},
             {1275, 1275, 1350},
