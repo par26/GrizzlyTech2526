@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.config.util.Alliance;
 import org.firstinspires.ftc.teamcode.config.util.MatchValues;
 import org.firstinspires.ftc.teamcode.config.util.Robot;
 
-public class TeleOp extends CommandOpMode {
+public class Tele extends CommandOpMode {
 
     //Subsystems
     private GamepadEx gp1;
@@ -27,7 +27,7 @@ public class TeleOp extends CommandOpMode {
 
     private Alliance alliance;
 
-    public TeleOp(Alliance alliance) {
+    public Tele(Alliance alliance) {
         this.alliance = alliance;
     }
 

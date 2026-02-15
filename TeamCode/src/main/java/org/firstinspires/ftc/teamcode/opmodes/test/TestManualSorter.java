@@ -17,7 +17,7 @@ public class TestManualSorter extends CommandOpMode {
     @Override
     public void initialize() {
         m_driver = new GamepadEx(gamepad1);
-        m_servo = new SorterServo(hardwareMap);
+        m_servo = new SorterServo(hardwareMap, telemetry);
 
         register(m_servo);
 
@@ -30,5 +30,7 @@ public class TestManualSorter extends CommandOpMode {
 
         m_driver.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(new InstantCommand(() -> m_servo.setAngle(0), m_servo));
+
+
     }
 }

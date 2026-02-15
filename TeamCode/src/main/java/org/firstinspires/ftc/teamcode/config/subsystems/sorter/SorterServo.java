@@ -19,11 +19,12 @@ public class SorterServo extends SubsystemBase {
     private double targetPos;
 
     private Telemetry telemetry;
-    public static double kP = 0.2;
+    public static double kP = 0.4;
     public static double kI = 0.0;
-    public static double kD = 0.0015;
+    public static double kD = 0.0;
 
-    public SorterServo(HardwareMap hwMap) {
+    public SorterServo(HardwareMap hwMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
         m_encoder = new AbsoluteAnalogEncoder(hwMap, SorterConstants.HW.ENCODER);
         m_servo = new CRServoEx(hwMap, SorterConstants.HW.SERVO, m_encoder, CRServoEx.RunMode.OptimizedPositionalControl);
 
@@ -65,21 +66,16 @@ public class SorterServo extends SubsystemBase {
         return targetPos - getCurrentAngle();
     }
 
-//    @SuppressLint("DefaultLocale")
-//    public void log() {
-//        telemetry.addLine(
-//                String.format(
-//                "%s: %.1f° → %s (err: f) %s",
-//                crServo.getDeviceType(),
-//                getCurrentAngle(),
-//                targetPos,
-//                getError(),
-//                crServo.atTargetPosition() ? "✓" : "..."
-//        ));
-//    }
+    public void log() {
+        telemetry.addData("Error", getError());
+        telemetry.addData("Current Angle", getCurrentAngle());
+        telemetry.addData("Target Angle", targetPos);
+        telemetry.update();
+    }
 
     @Override
     public void periodic() {
         m_servo.set(targetPos);
+        log();
     }
 }

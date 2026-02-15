@@ -37,7 +37,7 @@ public class TestSorter extends CommandOpMode {
         m_intake = new Intake(hardwareMap);
         m_sensor = new SorterSensor(hardwareMap);
         m_kicker = new Kicker(hardwareMap);
-        m_servo = new SorterServo(hardwareMap);
+        m_servo = new SorterServo(hardwareMap, telemetry);
         gp1 = new GamepadEx(gamepad1);
 
         register(m_intake, m_sensor, m_kicker, m_servo);

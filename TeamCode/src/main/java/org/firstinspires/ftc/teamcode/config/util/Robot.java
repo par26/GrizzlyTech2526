@@ -28,7 +28,7 @@ public class Robot {
     public final SorterServo servo;
     public final Kicker kicker;
     public final Drive drive;
-    public final Follower follower;
+    public final Follower f;
     public final Localization local;
     public Alliance a;
 
@@ -37,15 +37,15 @@ public class Robot {
     public Robot(HardwareMap hwMap, Alliance a, Telemetry telemetry) {
         this.a = a;
         initAllianceSpecific();
-        follower = Constants.createFollower(hwMap);
+        f = Constants.createFollower(hwMap);
         intake = new Intake(hwMap);
-        turret = new Turret(hwMap, follower, telemetry);
+        turret = new Turret(hwMap, f, telemetry);
 //        shooter = new Shooter(hwMap, follower);
-        servo = new SorterServo(hwMap);
+        servo = new SorterServo(hwMap, telemetry);
         sensor = new SorterSensor(hwMap);
         kicker = new Kicker(hwMap);
-        drive = new Drive(hwMap, follower);
-        local = new Localization(telemetry, follower);
+        drive = new Drive(hwMap, f);
+        local = new Localization(telemetry, f);
 
 
         hubs = hwMap.getAll(LynxModule.class);
