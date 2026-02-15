@@ -63,7 +63,8 @@ public class SorterServo extends SubsystemBase {
     }
 
     public double getError() {
-        return targetPos - getCurrentAngle();
+        double error = (targetPos - getCurrentAngle() + 540) % 360;
+        return error;
     }
 
     public void log() {

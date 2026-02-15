@@ -23,6 +23,7 @@ public class Intake extends SubsystemBase {
         //TODO: may need to adjust cpr & rpm
         m_motor = new Motor(hwMap, IntakeConstants.HW.MOTOR,28, 6000);
         m_motor.setRunMode(Motor.RunMode.RawPower);
+        m_motor.setInverted(true);
 
     }
 

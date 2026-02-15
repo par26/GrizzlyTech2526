@@ -31,7 +31,7 @@ public class IntakeConstants {
     }
 
     public static class SPIN {
-        public static double INTAKE_POWER = 0.7;
-        public static double REVERSE_POWER = 0.8;
+        public static double INTAKE_POWER = -0.6;
+        public static double REVERSE_POWER = 0.6;
     }
 }
