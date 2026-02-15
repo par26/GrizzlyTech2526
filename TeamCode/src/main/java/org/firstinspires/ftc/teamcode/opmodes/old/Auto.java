@@ -5,7 +5,7 @@ import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.old.MoveSubsystem;
+import org.firstinspires.ftc.teamcode.config.subsystems.old.MoveSubsystem;
 
 //temporary autonomous to move forward & gain points
 public class Auto extends CommandOpMode {

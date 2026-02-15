@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.test;
 
-import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
@@ -8,16 +7,16 @@ import com.seattlesolvers.solverslib.command.button.Trigger;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.commands.IntakeStateCommand;
-import org.firstinspires.ftc.teamcode.commands.ShootStateCommand;
-import org.firstinspires.ftc.teamcode.commands.sorter.SorterIntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.sorter.SorterShootCommand;
-import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.sorter.Kicker;
-import org.firstinspires.ftc.teamcode.subsystems.sorter.SorterSensor;
-import org.firstinspires.ftc.teamcode.subsystems.sorter.SorterServo;
-import org.firstinspires.ftc.teamcode.util.MatchValues;
-import org.firstinspires.ftc.teamcode.util.SorterNode;
+import org.firstinspires.ftc.teamcode.config.commands.IntakeStateCommand;
+import org.firstinspires.ftc.teamcode.config.commands.ShootStateCommand;
+import org.firstinspires.ftc.teamcode.config.commands.sorter.SorterIntakeCommand;
+import org.firstinspires.ftc.teamcode.config.commands.sorter.SorterShootCommand;
+import org.firstinspires.ftc.teamcode.config.subsystems.intake.Intake;
+import org.firstinspires.ftc.teamcode.config.subsystems.sorter.Kicker;
+import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterSensor;
+import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterServo;
+import org.firstinspires.ftc.teamcode.config.util.MatchValues;
+import org.firstinspires.ftc.teamcode.config.util.SorterNode;
 
 @TeleOp(group = "test")
 public class TestSorter extends CommandOpMode {

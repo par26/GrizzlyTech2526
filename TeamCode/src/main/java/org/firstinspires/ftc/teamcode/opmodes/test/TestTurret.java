@@ -6,14 +6,14 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.pedropathing.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.Drive;
-import org.firstinspires.ftc.teamcode.subsystems.Localization;
-import org.firstinspires.ftc.teamcode.subsystems.turret.Turret;
-import org.firstinspires.ftc.teamcode.util.Alliance;
-import org.firstinspires.ftc.teamcode.util.FieldConstants;
-import org.firstinspires.ftc.teamcode.util.MatchValues;
+import org.firstinspires.ftc.teamcode.config.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.config.pedropathing.Constants;
+import org.firstinspires.ftc.teamcode.config.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.config.subsystems.Localization;
+import org.firstinspires.ftc.teamcode.config.subsystems.turret.Turret;
+import org.firstinspires.ftc.teamcode.config.util.Alliance;
+import org.firstinspires.ftc.teamcode.config.util.FieldConstants;
+import org.firstinspires.ftc.teamcode.config.util.MatchValues;
 
 @TeleOp(group="test")
 public class TestTurret extends CommandOpMode {
@@ -28,13 +28,13 @@ public class TestTurret extends CommandOpMode {
     public void initialize() {
 
         MatchValues.goalPose = FieldConstants.redGoalPose;
-        MatchValues.startPose = FieldConstants.redSpawnTest;
+        MatchValues.autoStartPose = FieldConstants.redSpawnTest;
         MatchValues.alliance = Alliance.RED;
         m_follower = Constants.createFollower(hardwareMap);
         m_follower.setStartingPose(FieldConstants.redSpawnTest);
 
         m_driver1 = new GamepadEx(gamepad1);
-        m_turret = new Turret(hardwareMap, telemetry, m_follower);
+        m_turret = new Turret(hardwareMap, m_follower, telemetry);
         m_drive = new Drive(hardwareMap, m_follower);
         m_local = new Localization(telemetry, m_follower);
 

@@ -6,7 +6,7 @@ import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.subsystems.sorter.Kicker;
+import org.firstinspires.ftc.teamcode.config.subsystems.sorter.Kicker;
 
 @TeleOp(group = "test")
 public class TestKicker extends CommandOpMode {

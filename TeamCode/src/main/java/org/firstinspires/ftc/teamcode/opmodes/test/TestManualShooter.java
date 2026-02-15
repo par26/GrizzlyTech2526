@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 
-import org.firstinspires.ftc.teamcode.subsystems.shooter.ManualShooter;
+import org.firstinspires.ftc.teamcode.config.subsystems.shooter.ManualShooter;
 
 @TeleOp(group="test")
 public class TestManualShooter extends CommandOpMode {

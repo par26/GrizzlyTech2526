@@ -7,12 +7,12 @@ import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.pedropathing.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.Localization;
-import org.firstinspires.ftc.teamcode.subsystems.old.ManualTurretSubsystem;
-import org.firstinspires.ftc.teamcode.util.Alliance;
-import org.firstinspires.ftc.teamcode.util.FieldConstants;
-import org.firstinspires.ftc.teamcode.util.MatchValues;
+import org.firstinspires.ftc.teamcode.config.pedropathing.Constants;
+import org.firstinspires.ftc.teamcode.config.subsystems.Localization;
+import org.firstinspires.ftc.teamcode.config.subsystems.old.ManualTurretSubsystem;
+import org.firstinspires.ftc.teamcode.config.util.Alliance;
+import org.firstinspires.ftc.teamcode.config.util.FieldConstants;
+import org.firstinspires.ftc.teamcode.config.util.MatchValues;
 
 @TeleOp(group="test")
 public class TestManualTurret extends CommandOpMode {
@@ -26,7 +26,7 @@ public class TestManualTurret extends CommandOpMode {
     public void initialize() {
 
         MatchValues.goalPose = FieldConstants.redGoalPose;
-        MatchValues.startPose = FieldConstants.redSpawnTest;
+        MatchValues.autoStartPose = FieldConstants.redSpawnTest;
         MatchValues.alliance = Alliance.RED;
 
         m_follower = Constants.createFollower(hardwareMap);

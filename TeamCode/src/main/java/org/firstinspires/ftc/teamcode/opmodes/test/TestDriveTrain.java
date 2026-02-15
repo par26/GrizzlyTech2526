@@ -6,10 +6,10 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.pedropathing.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.Drive;
-import org.firstinspires.ftc.teamcode.subsystems.Localization;
+import org.firstinspires.ftc.teamcode.config.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.config.pedropathing.Constants;
+import org.firstinspires.ftc.teamcode.config.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.config.subsystems.Localization;
 
 @TeleOp(group="test")
 public class TestDriveTrain extends CommandOpMode {

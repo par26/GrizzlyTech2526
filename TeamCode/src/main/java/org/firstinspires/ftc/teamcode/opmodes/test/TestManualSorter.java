@@ -6,7 +6,7 @@ import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.subsystems.sorter.SorterServo;
+import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterServo;
 
 @TeleOp(group="test")
 public class TestManualSorter extends CommandOpMode {

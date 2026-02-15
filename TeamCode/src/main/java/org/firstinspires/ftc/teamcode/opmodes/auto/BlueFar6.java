@@ -13,6 +13,7 @@ import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.config.util.Alliance;
 //import org.firstinspires.ftc.teamcode.util.MatchConstants;
 
 /**
@@ -20,92 +21,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * SolversLib-compliant Pedro Pathing Autonomous
  */
 @Autonomous(name = "BlueFar6", preselectTeleOp = "TeleOp")
-public class BlueFar6 extends CommandOpMode {
+public class BlueFar6 extends Far6 {
 
-    // Pedro Pathing follower
-
-
-    // Path chains
-    private PathChain path1;
-    private PathChain path2;
-    private PathChain path3;
-
-    HardwareMap hardwareMap;
-
-    Follower follower;
-
-    Telemetry telemetry;
-
-    public BlueFar6(Follower follower, HardwareMap hardwareMap, Telemetry telemetry) {
-        this.follower = follower;
-        this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
-
+    public BlueFar6() {
+        super(Alliance.BLUE);
     }
-
-    @Override
-    public void initialize() {
-        // Set match constants
-        //MatchConstants.isBlueAlliance = true;
-        //MatchConstants.startLocation = MatchConstants.RobotStart.FAR;
-
-
-        // Initialize follower with starting pose
-        Pose startPose = new Pose(88.017, 8.086, Math.toRadians(90));
-
-        follower.setStartingPose(startPose);
-
-        // Build paths
-        buildPaths();
-
-        // Schedule the autonomous command sequence
-        schedule(
-                new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path1),
-                        new FollowPathCommand(follower, path2),
-                        new FollowPathCommand(follower, path3)
-                )
-        );
-
-        telemetry.addData("Status", "Initialized");
-        telemetry.addData("Alliance", "Blue");
-        telemetry.addData("Start Location", "Far");
-        telemetry.addData("Starting Pose", startPose);
-        telemetry.update();
-    }
-
-
-    /**
-     * Build all paths for the autonomous routine
-     */
-    private void buildPaths() {
-        // Path 1: Start to first waypoint
-        path1 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(88.017, 8.086),
-                        new Pose(102.013, 35.145)
-                ))
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(0))
-                .build();
-
-        // Path 2: First waypoint to second waypoint
-        path2 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(102.013, 35.145),
-                        new Pose(129.382, 35.456)
-                ))
-                .setTangentHeadingInterpolation()
-                .build();
-
-        // Path 3: Second waypoint back to start area
-        path3 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(129.382, 35.456),
-                        new Pose(87.896, 8.218)
-                ))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(90))
-                .build();
-    }
-
 
 }
