@@ -7,6 +7,7 @@ import com.seattlesolvers.solverslib.hardware.AbsoluteAnalogEncoder;
 import com.seattlesolvers.solverslib.hardware.motors.CRServoEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.config.subsystems.SubsystemBase;
 
 @Configurable
@@ -19,7 +20,7 @@ public class SorterServo extends SubsystemBase {
     private double targetPos;
 
     private Telemetry telemetry;
-    public static double kP = 0.4;
+    public static double kP = 0.5;
     public static double kI = 0.0;
     public static double kD = 0.0;
 
@@ -76,7 +77,7 @@ public class SorterServo extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_servo.set(targetPos);
+        m_servo.set(Math.toRadians(targetPos));
         log();
     }
 }
