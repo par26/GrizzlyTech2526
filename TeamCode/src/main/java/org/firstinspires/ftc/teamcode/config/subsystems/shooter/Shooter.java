@@ -1,10 +1,15 @@
 package org.firstinspires.ftc.teamcode.config.subsystems.shooter;
 
+import static org.firstinspires.ftc.teamcode.config.subsystems.shooter.ShooterConstants.kP;
+import static org.firstinspires.ftc.teamcode.config.subsystems.shooter.ShooterConstants.kS;
+import static org.firstinspires.ftc.teamcode.config.subsystems.shooter.ShooterConstants.kV;
+
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.seattlesolvers.solverslib.hardware.motors.Motor;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.teamcode.config.subsystems.SubsystemBase;
 import org.firstinspires.ftc.teamcode.config.util.Alliance;
@@ -16,26 +21,29 @@ import smile.interpolation.Interpolation2D;
 
 @Configurable
 public class Shooter extends SubsystemBase {
-    private Motor m_flywheelMotor;
+    private DcMotorEx m_flywheelMotor;
     private Follower m_follower;
+    private Telemetry m_telemetry;
 
     private final double farThreshold = 120;
-    private static double farVelocity = 1550;
+    private static double farVelocity = 1400;
 
-    private static final double[] xClose = {44, 72, 110};
-    private static final double[] yClose = {15, 35, 70};
+    private static final double[] xClose = {22, 46, 70, 94}; //col
+    private static final double[] yClose = {6, 30, 54, 66}; //row
+//    private static final double[][] closeVelocities = {
+//            {0, 0, 0, 0},
+//            {0, 1150, 1350, 0},
+//            {1200, 1230, 1200, 1160},
+//            {1250, 1325, 1333, 1300}
+//    };
+
     private static final double[][] closeVelocities = {
-            {1200, 1200, 1275},
-            {1275, 1275, 1350},
-            {1325, 1360, 1400}
+            {1200, 1200, 1200, 1250},
+            {1230, 1270, 1290, 1325},
+            {1250, 1280, 1310, 1330},
+            {1265, 1285, 1310, 1300}
     };
 
-//    private static final double[] xFar = {};
-//    private static final double[] yFar = {};
-//    private static final double[][] farVelocities = {
-//            {},
-//            {}
-//    };
 
     private static final Interpolation2D closeInterpolation = new BilinearInterpolation(xClose, yClose, closeVelocities);
 //    private static final Interpolation2D farInterpolation = new BilinearInterpolation(xFar, yFar, farVelocities);
@@ -43,20 +51,18 @@ public class Shooter extends SubsystemBase {
     private double targetVelocityPerTick;
     private Pose goalPose;
 
-    public Shooter(HardwareMap hwMap, Follower follower) {
+    public Shooter(HardwareMap hwMap, Follower follower, Telemetry telemetry) {
+        m_flywheelMotor = hwMap.get(DcMotorEx.class, ShooterConstants.HW.MOTOR);
+        this.m_telemetry = telemetry;
         this.m_follower = follower;
-        m_flywheelMotor = new Motor(hwMap, ShooterConstants.HW.MOTOR,28, 6000);
-        m_flywheelMotor.setRunMode(Motor.RunMode.VelocityControl);
-        m_flywheelMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        m_flywheelMotor.setVeloCoefficients(ShooterConstants.kP, 0,0);
-        m_flywheelMotor.setFeedforwardCoefficients(ShooterConstants.kS, ShooterConstants.kV);
 
-        m_flywheelMotor.resetEncoder();
         goalPose = MatchValues.alliance == Alliance.BLUE ? FieldConstants.blueGoalPose : FieldConstants.redGoalPose;
     }
 
+
+
     private void calculateTargetVelocity() {
-        Pose turretPose = getAdjustedPose(m_follower.getPose(), 12);
+        Pose turretPose = getAdjustedPose(m_follower.getPose(), 5);
         double dx = Math.abs(goalPose.getX() - turretPose.getX());
         double dy = Math.abs(goalPose.getY() - turretPose.getY());
         double distance = Math.hypot(dx, dy);
@@ -67,7 +73,6 @@ public class Shooter extends SubsystemBase {
             targetVelocityPerTick = farVelocity;
         }
     }
-
     public static Pose getAdjustedPose(Pose currentPose, double offsetDistanceCm) {
         double headingRad = currentPose.getHeading();
         offsetDistanceCm /= 2.54;
@@ -79,10 +84,22 @@ public class Shooter extends SubsystemBase {
         );
     }
 
+    private void setPower(double power) {
+        m_flywheelMotor.setPower(power);
+    }
+
+    private double getVelocity() {
+        return m_flywheelMotor.getVelocity();
+    }
+
+
     @Override
     public void periodic() {
-        calculateTargetVelocity();
+        m_telemetry.addData("Target Velo", targetVelocityPerTick);
+        m_telemetry.update();
 
-        m_flywheelMotor.set(targetVelocityPerTick);
+        calculateTargetVelocity();
+        setPower((kV * targetVelocityPerTick) + (kP * (targetVelocityPerTick - getVelocity())) + kS);
+
     }
 }

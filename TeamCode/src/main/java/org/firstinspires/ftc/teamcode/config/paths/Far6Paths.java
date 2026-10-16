@@ -14,8 +14,8 @@ public class Far6Paths {
     private Follower f;
 
     public Pose startPose = new Pose(87.317, 9.3, Math.toRadians(0));
+    public Pose shoot = new Pose(86.38, 14.23, 0);
     Pose corner1 = new Pose(135, 9.3, 0);
-    Pose shoot = new Pose(86.38, 14.23, 0);
     Pose corner2 = new Pose(132.79, 11.019); //tangential, no heading
     Pose corner2Control = new Pose(119.63, 5.698);
 
@@ -32,11 +32,23 @@ public class Far6Paths {
         }
     }
 
-    public PathChain corner1() {
+    public PathChain startToShoot() {
         return f.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 startPose,
+                                shoot
+                        )
+                )
+                .setLinearHeadingInterpolation(startPose.getHeading(), shoot.getHeading())
+                .build();
+    }
+
+    public PathChain corner1() {
+        return f.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                shoot,
                                 corner1
                         )
                 )

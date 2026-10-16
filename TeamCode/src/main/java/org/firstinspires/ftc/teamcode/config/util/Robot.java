@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.config.pedropathing.Constants;
 import org.firstinspires.ftc.teamcode.config.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.config.subsystems.Localization;
+import org.firstinspires.ftc.teamcode.config.subsystems.Solvers;
 import org.firstinspires.ftc.teamcode.config.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.config.subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.config.subsystems.sorter.Kicker;
@@ -29,7 +30,8 @@ public class Robot {
     public final Kicker kicker;
     public final Drive drive;
     public final Follower f;
-    public final Localization local;
+
+    public final Solvers s;
     public Alliance a;
 
     private final List<LynxModule> hubs;
@@ -37,15 +39,16 @@ public class Robot {
     public Robot(HardwareMap hwMap, Alliance a, Telemetry telemetry) {
         this.a = a;
         initAllianceSpecific();
+
         f = Constants.createFollower(hwMap);
         intake = new Intake(hwMap);
         turret = new Turret(hwMap, f, telemetry);
-        shooter = new Shooter(hwMap, f);
+        shooter = new Shooter(hwMap, f, telemetry);
         servo = new SorterServo(hwMap, telemetry);
-        sensor = new SorterSensor(hwMap);
+        sensor = new SorterSensor(hwMap, telemetry);
         kicker = new Kicker(hwMap);
         drive = new Drive(hwMap, f);
-        local = new Localization(telemetry, f);
+        s = new Solvers(telemetry);
 
 
         hubs = hwMap.getAll(LynxModule.class);
@@ -60,7 +63,7 @@ public class Robot {
     }
 
     public void register(CommandOpMode opmode) {
-        opmode.register(intake, turret, sensor, servo, drive, kicker, local);
+        opmode.register(intake, turret, sensor, servo, drive, kicker);
     }
 
 }

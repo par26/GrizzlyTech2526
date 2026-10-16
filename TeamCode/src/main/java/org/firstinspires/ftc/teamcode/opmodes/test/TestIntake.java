@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.test;
 
+`package org.firstinspires.ftc.teamcode.opmodes.test;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
@@ -37,3 +39,4 @@ public class TestIntake extends CommandOpMode {
 
 }
 
+`

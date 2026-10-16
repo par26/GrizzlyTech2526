@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.teamcode.config.subsystems.SubsystemBase;
+import org.firstinspires.ftc.teamcode.config.subsystems.shooter.ShooterConstants;
 
 @Configurable
 public class Outtake extends SubsystemBase {
@@ -13,9 +14,9 @@ public class Outtake extends SubsystemBase {
     public static double LAUNCH_POWER_FAR = 0.50;
 
     //tune values in prod
-    public static double p = 0.7;
-    public static double i = 0.2;
-    public static double d = 0.5;
+    public static double p = 0.35;
+    public static double i = 0.001;
+    public static double d = 0.001;
 
     private double power;
 
@@ -24,6 +25,7 @@ public class Outtake extends SubsystemBase {
         m_motor.setRunMode(Motor.RunMode.VelocityControl);
         m_motor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         m_motor.setVeloCoefficients(p, i, d);
+        m_motor.setFeedforwardCoefficients(ShooterConstants.kS, ShooterConstants.kV);
 
         power = LAUNCH_POWER_CLOSE;
         m_motor.resetEncoder();

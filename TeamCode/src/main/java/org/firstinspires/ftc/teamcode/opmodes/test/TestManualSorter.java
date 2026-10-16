@@ -6,27 +6,35 @@ import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.config.SorterServoV3;
-import org.firstinspires.ftc.teamcode.config.subsystems.SorterServoV2;
 import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterServo;
 
 @TeleOp(group="test")
 public class TestManualSorter extends CommandOpMode {
 
     private GamepadEx m_driver;
-//    private SorterServoV2 m_servo;
-    private SorterServoV3 m_servo;
+    private SorterServo m_servo;
 
     @Override
     public void initialize() {
         m_driver = new GamepadEx(gamepad1);
-//        m_servo = new SorterServoV3(hardwareMap, telemetry);
-        m_servo = new SorterServoV3(hardwareMap);
+        m_servo = new SorterServo(hardwareMap, telemetry);
 
         register(m_servo);
 
-//        m_driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-//                .whenPressed(new InstantCommand(() -> m_servo.rotateNode(), m_servo));
+        m_driver.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+                .whenPressed(new InstantCommand(() -> m_servo.setPosition(1)));
+
+        m_driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+                .whenPressed(new InstantCommand(() -> m_servo.setPosition(0)));
+
+        m_driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+                .whenPressed(new InstantCommand(() -> m_servo.setPosition(2)));
+
+        m_driver.getGamepadButton(GamepadKeys.Button.Y)
+                .whenPressed(new InstantCommand(() -> m_servo.applyOffset()));
+
+        m_driver.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(new InstantCommand(() -> m_servo.removeOffset()));
 
 
     }

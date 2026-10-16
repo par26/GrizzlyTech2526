@@ -19,8 +19,7 @@ public class IntakeStateCommand extends SequentialCommandGroup {
 
         addCommands(
                 new InstantCommand(m_intake::lowerIntake, m_intake),
-                new InstantCommand(m_servo::removeOffset, m_servo),
-                new WaitCommand(300)
+                new InstantCommand(m_servo::removeOffset, m_servo)
         );
     }
 

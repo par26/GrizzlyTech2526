@@ -1,83 +1,88 @@
 package org.firstinspires.ftc.teamcode.config.subsystems.sorter;
 
-import com.bylazar.configurables.annotations.Configurable;
+import static org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterConstants.Index.intakePositions;
+import static org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterConstants.Index.shootPositions;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.seattlesolvers.solverslib.hardware.AbsoluteAnalogEncoder;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.hardware.motors.CRServoEx;
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.config.subsystems.SubsystemBase;
+import org.firstinspires.ftc.teamcode.config.util.MatchValues;
 
-@Configurable
 public class SorterServo extends SubsystemBase {
 
+    private Servo servo;
     private CRServoEx m_servo;
-    private AbsoluteAnalogEncoder m_encoder;
+    private Telemetry m_telemetry;
+    private ElapsedTime rotationTimer;
 
-    private double error;
-    private double targetPos;
+    private double[] curPositions;
+    private double curPosition;
+    private boolean isIntakePosition = true;
 
-    private Telemetry telemetry;
-    public static double kP = 0.5;
-    public static double kI = 0.0;
-    public static double kD = 0.0;
+    public static boolean isRotating = false;
+    private double rotationTime;
 
     public SorterServo(HardwareMap hwMap, Telemetry telemetry) {
-        this.telemetry = telemetry;
-        m_encoder = new AbsoluteAnalogEncoder(hwMap, SorterConstants.HW.ENCODER);
-        m_servo = new CRServoEx(hwMap, SorterConstants.HW.SERVO, m_encoder, CRServoEx.RunMode.OptimizedPositionalControl);
+        rotationTimer = new ElapsedTime();
+        servo = hwMap.get(Servo.class, "sorterServo");
+        m_telemetry = telemetry;
 
-        m_servo.setPIDF(new PIDFCoefficients(kP, kI, kD, 0));
-        m_servo.set(Math.toRadians(0));
+        if (MatchValues.robotState == MatchValues.RobotState.INTAKE) {
+            removeOffset();
+        } else {
+            applyOffset();
+        }
+        setPosition(0);
     }
 
-    private void changeAngle(double angle) {
-        targetPos += angle;
+    /**
+     * Sets position of the servo depending on the curPositions array
+     * @param index index 0-2
+     */
+    public void setPosition(int index) {
+        double current = curPosition;
+        double target = curPositions[index];
+        double dist = Math.abs(target - current);
+        rotationTime = dist * 0.8;
+
+        curPosition = curPositions[index];
+        rotationTimer.reset();
     }
 
-    public void rotateC() {
-        changeAngle(SorterConstants.Index.NODE_ANGLE_DEG);
+    public boolean isFinishedRotating() {
+        return rotationTimer.seconds() >= rotationTime;
     }
-    public void rotateCC() {
-        changeAngle(-SorterConstants.Index.NODE_ANGLE_DEG);
+
+    public boolean isIntakePosition() {
+        return isIntakePosition;
     }
+
     public void applyOffset() {
-        changeAngle(SorterConstants.Index.OFFSET_ANGLE_DEG);
+        curPositions = shootPositions;
+        setPosition(0);
+        rotationTimer.reset();
+        isIntakePosition = false;
     }
     public void removeOffset() {
-        changeAngle(-SorterConstants.Index.OFFSET_ANGLE_DEG);
-    }
-
-    public void setAngle(double angle) {
-        targetPos = angle;
-
-    }
-
-    public boolean isAtTarget() {
-        return m_servo.atTargetPosition();
-    }
-
-    public double getCurrentAngle() {
-        return (m_encoder.getVoltage() / 3.3) *  360;
-    }
-
-    public double getError() {
-        double error = (targetPos - getCurrentAngle() + 540) % 360;
-        return error;
-    }
-
-    public void log() {
-        telemetry.addData("Error", getError());
-        telemetry.addData("Current Angle", getCurrentAngle());
-        telemetry.addData("Target Angle", targetPos);
-        telemetry.update();
+        curPositions = intakePositions;
+        setPosition(0);
+        rotationTimer.reset();
+        isIntakePosition = true;
     }
 
     @Override
     public void periodic() {
-        m_servo.set(Math.toRadians(targetPos));
-        log();
+        if (isFinishedRotating()) {
+            isRotating = false;
+        } else {
+            isRotating = true;
+        }
+
+        servo.setPosition(curPosition);
     }
 }

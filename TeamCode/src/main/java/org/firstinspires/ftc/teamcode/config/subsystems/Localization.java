@@ -4,9 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.config.util.Alliance;
 import org.firstinspires.ftc.teamcode.config.util.FieldConstants;
-import org.firstinspires.ftc.teamcode.config.util.MatchValues;
 
 public class Localization extends SubsystemBase{
 
@@ -22,12 +20,12 @@ public class Localization extends SubsystemBase{
         return m_follower.getPose();
     }
 
-    public void relocalize() {
-        if (MatchValues.alliance == Alliance.BLUE) {
-            m_follower.setPose(FieldConstants.blueAllianceRelocalizePose);
-        } else {
-            m_follower.setPose(FieldConstants.redAllianceRelocalizePose);
-        }
+    public void relocalizeRed() {
+        m_follower.setPose(FieldConstants.redGateRelocalizePose);
+    }
+
+    public void relocalizeBlue() {
+        m_follower.setPose(FieldConstants.blueGateRelocalizePose);
     }
 
     private void log() {

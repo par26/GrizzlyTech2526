@@ -6,19 +6,16 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.config.subsystems.SubsystemBase;
 import org.firstinspires.ftc.teamcode.config.util.MatchValues;
 import org.firstinspires.ftc.teamcode.config.util.SorterNode;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-
 public class SorterSensor extends SubsystemBase {
 
-//    private final RTP m_rtp;
     private final RevColorSensorV3 sensor1;
     private final RevColorSensorV3 sensor2;
+    private final Telemetry telemetry;
 
     public SorterNode sorterNode1;
     public SorterNode sorterNode2;
@@ -29,12 +26,12 @@ public class SorterSensor extends SubsystemBase {
     public SorterNode.NodeOption filtered1;
     public SorterNode.NodeOption filtered2;
 
-    public Deque<SorterNode> nodeDeque;
-    public static final int SHOOT_INDEX = 1;
+    public SorterNode[] nodes;
 
-    public SorterSensor(HardwareMap hwMap) {
+    public SorterSensor(HardwareMap hwMap, Telemetry telemetry) {
         sensor1 = hwMap.get(RevColorSensorV3.class, SorterConstants.HW.SENSOR1);
         sensor2 = hwMap.get(RevColorSensorV3.class, SorterConstants.HW.SENSOR2);
+        this.telemetry = telemetry;
 
         sensor1.enableLed(true);
         sensor2.enableLed(true);
@@ -44,53 +41,18 @@ public class SorterSensor extends SubsystemBase {
         sorterNode2 = new SorterNode(SorterNode.NodeOption.PURPLE);
         sorterNode3 = new SorterNode(SorterNode.NodeOption.PURPLE);
 
+        nodes = new SorterNode[] {sorterNode1, sorterNode2, sorterNode3};
     }
 
-    //where index 1 = shooting index, and when switched to shooting mode, we first rotate offset clockwise
-    public void initIndexMap() {
-        nodeDeque = new ArrayDeque<>(List.of(sorterNode1, sorterNode3, sorterNode2));
-    }
-
-    // Rotate deque Counterclockwise: [1,3,2] -> [3,2,1]
-    public void rotateModelCC() {
-        nodeDeque.addLast(nodeDeque.removeFirst());
-    }
-
-    // Rotate deque Clockwise
-    public void rotateModelC() {
-        nodeDeque.addFirst(nodeDeque.removeLast());
-    }
-
-    public SorterNode getDequeNode(int index) {
-        int i = 0;
-        for (SorterNode n : nodeDeque) {
-            if (i == index) return n;
-            i++;
-        }
-        throw new IllegalArgumentException("Bad index: " + index);
+    public SorterNode getNode(int index) {
+        return nodes[index];
     }
 
     public boolean anyBallsLeft() {
-        for (SorterNode n : nodeDeque) {
+        for (SorterNode n : nodes) {
             if (n.getStoredNode() != SorterNode.NodeOption.EMPTY) return true;
         }
         return false;
-    }
-
-    public boolean containsColor(SorterNode.NodeOption color) {
-        for (SorterNode n : nodeDeque) {
-            if (n.getStoredNode() == color) return true;
-        }
-        return false;
-    }
-
-    public int indexOfFirst(SorterNode.NodeOption color) {
-        if (getDequeNode(SHOOT_INDEX).getStoredNode() == color) return SHOOT_INDEX;
-
-        if (getDequeNode(0).getStoredNode() == color) return 0;
-        if (getDequeNode(2).getStoredNode() == color) return 2;
-
-        return -1;
     }
 
     private void updateSensors() {
@@ -101,6 +63,7 @@ public class SorterSensor extends SubsystemBase {
         filtered2 = sensor2Filter.update(raw2);
 
     }
+
     private SorterNode.NodeOption checkSensor(RevColorSensorV3 node) {
         NormalizedRGBA n = node.getNormalizedColors();
         float[] hsv = new float[3];
@@ -125,8 +88,8 @@ public class SorterSensor extends SubsystemBase {
 
     }
 
-    private final StableNodeFilter sensor1Filter = new StableNodeFilter(6, 8);
-    private final StableNodeFilter sensor2Filter = new StableNodeFilter(6, 8);
+    private final StableNodeFilter sensor1Filter = new StableNodeFilter(8, 2);
+    private final StableNodeFilter sensor2Filter = new StableNodeFilter(8 , 2);
 
     private static class StableNodeFilter {
         private SorterNode.NodeOption stable = SorterNode.NodeOption.EMPTY;

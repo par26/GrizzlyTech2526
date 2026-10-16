@@ -20,12 +20,22 @@ public class TestManualShooter extends CommandOpMode {
     public void initialize() {
         gp = new GamepadEx(gamepad1);
         m_shooter = new ManualShooter(hardwareMap, telemetry);
+        m_kicker = new Kicker(hardwareMap);
 
         gp.getGamepadButton(GamepadKeys.Button.DPAD_UP)
                 .whenPressed(new InstantCommand(() -> m_kicker.activate(), m_kicker));
 
         gp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(new InstantCommand(() -> m_kicker.rest(), m_kicker));
+
+        gp.getGamepadButton(GamepadKeys.Button.A)
+                        .whenPressed(new InstantCommand(() -> m_shooter.setTargetVelocity(1200), m_shooter));
+
+        gp.getGamepadButton(GamepadKeys.Button.B)
+                .whenPressed(new InstantCommand(() -> m_shooter.setTargetVelocity(1400), m_shooter));
+
+        gp.getGamepadButton(GamepadKeys.Button.X)
+                .whenPressed(new InstantCommand(() -> m_shooter.setTargetVelocity(1000), m_shooter));
 
         register(m_shooter);
     }

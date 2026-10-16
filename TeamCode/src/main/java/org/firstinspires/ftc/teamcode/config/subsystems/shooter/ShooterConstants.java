@@ -9,10 +9,14 @@ public class ShooterConstants {
 
     private ShooterConstants() {}
 
-    public static double kP = 0.0;
-    public static double kS = 0.0003;
-    public static double kV = 0.005;
-
+//    public static double kP = 0.000165;
+//    public static double kS = 0.038;
+//    public static double kV = 0.00038;
+    public static double kP = 0.007;
+    public static double kS = 0.06515;
+//    public static double kV = 0.00035;
+//    public static double kV = 0.0004629;
+    public static double kV = 0.000384;
     public static Shooter shooter = new Shooter();
     public static class Shooter {
 

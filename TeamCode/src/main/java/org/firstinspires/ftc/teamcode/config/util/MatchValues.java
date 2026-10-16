@@ -15,6 +15,10 @@ public class MatchValues {
         SHOOT
     }
 
+    public static void switchRobotState() {
+        robotState = robotState == RobotState.INTAKE ? RobotState.SHOOT : RobotState.INTAKE;
+    }
+
     public static MatchValues.RobotStart startLocation;
     public static MatchValues.RobotState robotState;
     public static Alliance alliance;

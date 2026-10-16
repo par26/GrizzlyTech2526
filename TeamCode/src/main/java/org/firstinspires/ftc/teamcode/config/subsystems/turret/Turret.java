@@ -149,7 +149,7 @@
         }
 
         private double calculateTurretAngle(Pose currentPose, Pose goalPose) {
-            Pose turretPoseRelativeToRobot = getAdjustedPose(currentPose, 12);
+            Pose turretPoseRelativeToRobot = getAdjustedPose(currentPose, 5);
 
             double deltaX = goalPose.getX() - turretPoseRelativeToRobot.getX();
             double deltaY = goalPose.getY() - turretPoseRelativeToRobot.getY();
@@ -199,7 +199,8 @@
         public void updateTargetTicks() {
             if (foundGoalTag) {calculateOffset();}
             targetAngle = isManual ? manualTargetAngle : calculateTurretAngle(m_follower.getPose(), targetPose) + accumulatedOffsetAngle;
-            targetTicks = degreesToTicks(AngularUtil.turretDelta(targetAngle));
+//            targetTicks = degreesToTicks(AngularUtil.turretDelta(targetAngle));
+            targetTicks = degreesToTicks(AngularUtil.turretDelta(90));
         }
 
         @Override

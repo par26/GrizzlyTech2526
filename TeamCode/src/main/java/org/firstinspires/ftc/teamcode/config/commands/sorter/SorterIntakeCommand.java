@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.config.commands.sorter;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.config.commands.CommandBase;
 import org.firstinspires.ftc.teamcode.config.subsystems.sorter.SorterServo;
@@ -14,6 +16,7 @@ public class SorterIntakeCommand extends CommandBase {
 
     private int intakeCount;
     private MatchValues.RobotState nextState;
+    private ElapsedTime cooldown = new ElapsedTime();
 
     SorterNode[] nodeArray;
 
@@ -21,11 +24,16 @@ public class SorterIntakeCommand extends CommandBase {
         this.m_sensor = sensor;
         this.m_servo = servo;
         this.telemetry = telemetry;
+
         addRequirements(sensor, servo);
     }
 
     @Override
     public void initialize() {
+        m_servo.removeOffset();
+        m_servo.setPosition(0);
+        cooldown.reset();
+
         intakeCount = 2;
         nodeArray = new SorterNode[] {m_sensor.sorterNode1, m_sensor.sorterNode2, m_sensor.sorterNode3};
         nextState = MatchValues.RobotState.INTAKE;
@@ -34,19 +42,26 @@ public class SorterIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        telemetry.addData("Count: ", intakeCount);
         SorterNode.NodeOption chosen =
                 m_sensor.filtered1 != SorterNode.NodeOption.EMPTY ? m_sensor.filtered1 :
                 m_sensor.filtered2 != SorterNode.NodeOption.EMPTY ? m_sensor.filtered2 :
                 SorterNode.NodeOption.EMPTY;
 
-        if (m_servo.isAtTarget() && chosen != SorterNode.NodeOption.EMPTY) {
-            m_servo.rotateCC();
-            nodeArray[intakeCount].setNode(chosen);
-            intakeCount--;
+        if (cooldown.milliseconds() < 500) {
+            return;
+        }
+        if (chosen != SorterNode.NodeOption.EMPTY) {
+            cooldown.reset();
+        }
 
+        if (m_servo.isFinishedRotating() && chosen != SorterNode.NodeOption.EMPTY) {
+            nodeArray[intakeCount].setNode(chosen);
+
+            intakeCount--;
             if (intakeCount < 0) {
                 nextState = MatchValues.RobotState.SHOOT;
+            } else {
+                m_servo.setPosition(2-intakeCount);
             }
         }
     }
@@ -59,7 +74,5 @@ public class SorterIntakeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         MatchValues.robotState = MatchValues.RobotState.SHOOT;
-
-        m_sensor.initIndexMap();
     }
 }
